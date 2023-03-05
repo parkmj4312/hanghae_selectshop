@@ -2,13 +2,15 @@ package com.sparta.myselectshop.entity;
 
 import com.sparta.myselectshop.dto.ProductMypriceRequestDto;
 import com.sparta.myselectshop.dto.ProductRequestDto;
-import jakarta.persistence.*;
+import com.sparta.myselectshop.naver.dto.ItemDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+
+import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
-@Setter
 @Entity // DB 테이블 역할을 합니다.
 @NoArgsConstructor
 public class Product extends Timestamped{
@@ -32,15 +34,31 @@ public class Product extends Timestamped{
     @Column(nullable = false)
     private int myprice;
 
-    public Product(ProductRequestDto requestDto) {
+    @Column(nullable = false)
+    private Long userId;
+
+    @ManyToMany
+    private List<Folder> folderList = new ArrayList<>();
+
+    public Product(ProductRequestDto requestDto, Long userId) {
         this.title = requestDto.getTitle();
         this.image = requestDto.getImage();
         this.link = requestDto.getLink();
         this.lprice = requestDto.getLprice();
         this.myprice = 0;
+        this.userId = userId;
     }
 
     public void update(ProductMypriceRequestDto requestDto) {
         this.myprice = requestDto.getMyprice();
     }
+
+    public void updateByItemDto(ItemDto itemDto) {
+        this.lprice = itemDto.getLprice();
+    }
+
+    public void addFolder(Folder folder) {
+        this.folderList.add(folder);
+    }
+
 }
