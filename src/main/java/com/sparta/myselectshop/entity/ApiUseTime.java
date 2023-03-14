@@ -5,25 +5,28 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-
 @Getter
 @Entity
 @NoArgsConstructor
-public class Folder {
-
-    @Id
+public class ApiUseTime {
+    // ID가 자동으로 생성 및 증가합니다.
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
     private Long id;
 
-    @Column(nullable = false)
-    private String name;
-
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "USER_ID", nullable = false)
     private User user;
 
-    public Folder(String name, User user) {
-        this.name = name;
+    @Column(nullable = false)
+    private Long totalTime;
+
+    public ApiUseTime(User user, long totalTime) {
         this.user = user;
+        this.totalTime = totalTime;
+    }
+
+    public void addUseTime(long useTime) {
+        this.totalTime += useTime;
     }
 }

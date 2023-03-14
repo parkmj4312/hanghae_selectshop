@@ -3,7 +3,7 @@ package com.sparta.myselectshop.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +20,8 @@ public class User {
     // unique: 중복 허용 여부 (false 일때 중복 허용)
     @Column(nullable = false, unique = true)
     private String username;
+
+    private Long kakaoId;
 
     @Column(nullable = false)
     private String password;
@@ -41,4 +43,16 @@ public class User {
         this.role = role;
     }
 
+    public User(String username, Long kakaoId, String password, String email, UserRoleEnum role) {
+        this.username = username;
+        this.kakaoId = kakaoId;
+        this.password = password;
+        this.email = email;
+        this.role = role;
+    }
+
+    public User kakaoIdUpdate(Long kakaoId) {
+        this.kakaoId = kakaoId;
+        return this;
+    }
 }
